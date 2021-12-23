@@ -2,12 +2,18 @@
 {
     public class DateRange
     {
-        public DateRange(DateTime from, DateTime to)
+        public DateRange(DateOnly from, DateOnly to)
         {
             From = from;
             To = to;
         }
-        public DateTime From { get; set; }
-        public DateTime To { get; set; }
+        public DateOnly From { get; set; }
+        public DateOnly To { get; set; }
+        
+        public void Deconstruct(out DateOnly from, out DateOnly to)
+        {
+            from = From;
+            to = To;
+        }
     }
 }

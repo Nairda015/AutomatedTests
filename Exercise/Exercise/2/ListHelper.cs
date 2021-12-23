@@ -10,16 +10,13 @@ namespace Exercise
     {
         public static List<int> FilterOddNumber(List<int> listOfNumbers)
         {
-            List<int> result = new List<int>();
-
-            for (int i = 0; i < listOfNumbers.Count; i++)
+            for (var i = 0; i < listOfNumbers.Count; i++)
             {
-                if (listOfNumbers[i] % 2 == 0)
-                {
-                    listOfNumbers.RemoveAt(i);
-                }
+                if (listOfNumbers[i] % 2 != 0) continue;
+                listOfNumbers.RemoveAt(i);
+                i--;
             }
-            return result;
+            return listOfNumbers;
         }
     }
 }

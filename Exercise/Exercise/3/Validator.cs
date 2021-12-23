@@ -6,38 +6,42 @@ using System.Threading.Tasks;
 
 namespace Exercise
 {
-    public class Validator
+    public static class Validator
     {
         /// <summary>
         /// Returns true value if the input date ranges are not overlapping
         /// </summary>
         /// <returns></returns>
-        public bool ValidateOverlapping(List<DateRange> dateRanges, DateRange input)
+        public static bool ValidateOverlapping(List<DateRange> dateRanges, DateRange input)
         {
-            if (dateRanges == null || !dateRanges.Any()) return true;
+            if (!dateRanges.Any()) return true;
 
+            var overlappingDateRange = dateRanges.FirstOrDefault(dr => dr.IsOverlapping(input));
+            if (overlappingDateRange is not null) return true;
 
-            var overlappingDateRange = dateRanges
-                .FirstOrDefault(dr => input.From.Date >= dr.From.Date && input.From.Date <= dr.To.Date
-                                    || input.To.Date >= dr.From.Date && input.To.Date <= dr.To.Date);
+            var outerOverlappingDateRange = dateRanges.FirstOrDefault(dr => dr.IsInside(input));
+            if (outerOverlappingDateRange != null) return true;
 
-            if (overlappingDateRange != null) return false;
+            var innerOverlappingDateRange = dateRanges.FirstOrDefault(input.IsInside);
+            return innerOverlappingDateRange is not null;
+        }
 
-
-            var outerOverlappingDateRange = dateRanges
-                .FirstOrDefault(dr => dr.From.Date <= input.From.Date && dr.To.Date >= input.To.Date);
-
-            if (outerOverlappingDateRange != null) return false;
-
-
-            var innerOverlappingDateRange = dateRanges
-                .FirstOrDefault(dr => dr.From.Date <= input.To.Date && dr.From.Date >= input.From.Date
-                 && dr.To.Date <= input.To.Date && dr.To.Date >= input.From.Date);
-
-            
-            if(innerOverlappingDateRange != null) return false;
-
-            return true;
+        private static bool IsOverlapping(this DateRange booked, DateRange newReservation)
+        {
+            var (from, to) = newReservation;
+            return booked.IsBetween(from) || booked.IsBetween(to);
+        }
+        
+        private static bool IsBetween(this DateRange booked, DateOnly date)
+        {
+            var (from, to) = booked;
+            return from <= date && to >= date;
+        }
+        
+        private static bool IsInside(this DateRange booked, DateRange newReservation)
+        {
+            var (from, to) = newReservation;
+            return booked.From <= from && booked.To >= to;
         }
     }
 }
