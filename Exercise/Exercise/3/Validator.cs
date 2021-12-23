@@ -18,9 +18,10 @@ namespace Exercise
 
             var overlappingDateRange = dateRanges.FirstOrDefault(dr => dr.IsOverlapping(input));
             if (overlappingDateRange is not null) return true;
-
-            var outerOverlappingDateRange = dateRanges.FirstOrDefault(dr => dr.IsInside(input));
-            if (outerOverlappingDateRange != null) return true;
+            
+            // useless code
+            //var outerOverlappingDateRange = dateRanges.FirstOrDefault(dr => dr.IsInside(input));
+            //if (outerOverlappingDateRange != null) return true;
 
             var innerOverlappingDateRange = dateRanges.FirstOrDefault(input.IsInside);
             return innerOverlappingDateRange is not null;
