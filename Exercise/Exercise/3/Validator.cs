@@ -9,7 +9,7 @@ namespace Exercise
     public static class Validator
     {
         /// <summary>
-        /// Returns true value if the input date ranges are not overlapping
+        /// Returns true value if the input date ranges are overlapping
         /// </summary>
         /// <returns></returns>
         public static bool ValidateOverlapping(List<DateRange> dateRanges, DateRange input)
